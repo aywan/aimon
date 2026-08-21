@@ -1,0 +1,48 @@
+# Waveshare ESP32-S3-Touch-LCD-3.49
+CONFIG_IDF_TARGET="esp32s3"
+
+# This board's ESP32-S3R8 has 16MB flash and 8MB octal PSRAM
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+CONFIG_ESPTOOLPY_FLASHSIZE="16MB"
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_MODE_OCT=y
+CONFIG_SPIRAM_SPEED_80M=y
+# QSPI LCD bounce-copies each flush into internal DMA RAM unless the panel
+# IO uses psram_dma_direct (see lcd.c). Keep a larger DMA pool anyway for
+# SPI descriptors and I2S; 32K was too tight once BLE was enabled.
+CONFIG_SPIRAM_USE_MALLOC=y
+CONFIG_SPIRAM_MALLOC_RESERVE_INTERNAL=98304
+
+# LVGL needs a bit more main task stack than the 3.5K default
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
+
+# RGB565 to match the 16bpp QSPI panel config
+CONFIG_LV_COLOR_DEPTH_16=y
+
+# SD-card wallpapers (bg.png / fg.png) decoded once at boot.
+# lodepng goes through lv_malloc; builtin 64KB pool cannot hold a 640×172
+# RGBA frame (~440KB) and returns error 83. clib malloc + SPIRAM sends
+# large allocs to PSRAM (ALWAYSINTERNAL=16K), small LVGL objects stay DRAM.
+CONFIG_LV_USE_LODEPNG=y
+CONFIG_LV_USE_CLIB_MALLOC=y
+
+# ~1.4x the default 14px; carried over from the 1.47" panel, revisit for the
+# taller 3.49" screen once the UI layout is redone for it
+CONFIG_LV_FONT_MONTSERRAT_20=y
+CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
+CONFIG_LV_FONT_MONTSERRAT_14=y
+# CONFIG_LV_BUILD_EXAMPLES is not set
+# CONFIG_LV_BUILD_DEMOS is not set
+
+# 1.5MB factory partition: larger fonts do not fit in the 1MB default
+CONFIG_PARTITION_TABLE_SINGLE_APP_LARGE=y
+
+# BLE (NimBLE)
+CONFIG_BT_ENABLED=y
+CONFIG_BT_NIMBLE_ENABLED=y
+# Host buffers in PSRAM so they don't compete with the LCD DMA pool / BT
+# controller for the small internal DRAM.
+CONFIG_BT_NIMBLE_MEM_ALLOC_MODE_EXTERNAL=y
+# Bonding keys live in RAM unless this is set; without it macOS keeps the
+# old LTK after a board reset and will not automatically start a new pairing.
+CONFIG_BT_NIMBLE_NVS_PERSIST=y

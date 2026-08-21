@@ -1,0 +1,11 @@
+dependencies:
+  idf: ">=5.3"
+  # 1.0.1 is what Waveshare's verified-working example pins, but it only
+  # compiles against ESP-IDF <6.0 (uses the old esp_lcd_panel_dev_config_t
+  # field name "color_space", renamed to "rgb_ele_order" for IDF 6.0). Their
+  # changelog confirms 2.x is the ESP-IDF-6.0-compatible line, so we're stuck
+  # on 2.x — see lcd.c for the actual QSPI blank-screen workaround.
+  espressif/esp_lcd_axs15231b: "^2.1"
+  # On the V2 board revision, LCD_RST is wired to this I2C GPIO expander
+  # (bit 5), not a bare ESP32 GPIO — see lcd.c.
+  espressif/esp_io_expander_tca9554: "^2.0.1"

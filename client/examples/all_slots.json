@@ -1,0 +1,27 @@
+{
+  "slot_1": {
+    "type": "gauge",
+    "value": 80,
+    "label": "codex",
+    "fg": "#3ecf8e",
+    "bg": "#1a3328"
+  },
+  "slot_2": {
+    "type": "text",
+    "text": "1d3h",
+    "label": "to reset"
+  },
+  "slot_3": {
+    "type": "gauge",
+    "value": 40,
+    "label": "reset",
+    "fg": "#40a0ff",
+    "bg": "#1a2833"
+  },
+  "slot_4": {
+    "type": "text",
+    "text": "idle",
+    "label": "status",
+    "fg": "#c8c8c8"
+  }
+}

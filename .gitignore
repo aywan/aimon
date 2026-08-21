@@ -1,0 +1,23 @@
+# ESP-IDF build output
+assets-local/
+build/
+.cache/
+.tmp/
+managed_components/
+sdkconfig
+sdkconfig.old
+compile_commands.json
+
+# IDE / local editor (machine-specific paths and caches)
+.idea/
+.vscode/
+
+# macOS
+.DS_Store
+
+# Go client build artifacts (keep Info.plist / source, drop the built binary)
+client/aiboard-client
+client/aiboard-client.app/Contents/MacOS/aiboard-client
+
+# Local Claude Code settings
+.claude/settings.local.json
